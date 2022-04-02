@@ -2,7 +2,7 @@
     "name": "a4smanjorg5/db-utils",
     "description": "Database utilities and sql helper",
     "type": "library",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "R Givent A Simanjorang",
