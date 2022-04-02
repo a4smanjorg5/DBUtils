@@ -1,0 +1,26 @@
+{
+    "name": "a4smanjorg5/db-utils",
+    "description": "Database utilities and sql helper",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "R Givent A Simanjorang",
+            "email": "a4smanjorg5@protonmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://github.com/a4smanjorg5/DBUtils/issues",
+        "source": "https://github.com/a4smanjorg5/DBUtils"
+    },
+    "require": {
+        "php": ">=4.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "a4smanjorg5\\DBUtils\\": "src/"
+        },
+        "files": ["version.php"]
+    }
+}
