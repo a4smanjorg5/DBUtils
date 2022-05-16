@@ -229,7 +229,7 @@ class SQL_WHERE_CLAUSE {
     static function create($init, $mysql = null) {
         if(!is_array($init)) return false;
         $result = new SQL_WHERE_CLAUSE();
-        if (is_a($mysql, 'a4smanjorg5\DBUtils\MYSQL'))
+        if (is_a($mysql, __NAMESPACE__ . '\MYSQL'))
             $result -> mysql = $mysql;
         $co_op = false;
         foreach($init as $clause) {

@@ -40,7 +40,7 @@ class SQL {
         return self::value_query_quote($val, true, $mysql);
     }
     static function value_query_quote($val, $quotes = true, $mysql = null) {
-        if (!is_null($mysql) && !is_a($mysql, 'a4smanjorg5\DBUtils\MYSQL'))
+        if (!is_null($mysql) && !is_a($mysql, __NAMESPACE__ . '\MYSQL'))
             throw new \InvalidArgumentException('$mysql must a MYSQL instance');
         if($quotes) return "'" . SQL::value_query_quote($val, false, $mysql) . "'";
         if (!is_null($mysql)) return $mysql -> real_escape_string((string)$val);

@@ -68,7 +68,7 @@ class MYSQL {
     }
     function query_delete($tbl_name, $where) {
         $tbl = SQL::fieldname_quote($tbl_name);
-        $w = is_a($where, 'a4smanjorg5\DBUtils\SQL_WHERE_CLAUSE') ? " " . $where -> to_clause(true, $this) : "";
+        $w = is_a($where, __NAMESPACE__ .'\SQL_WHERE_CLAUSE') ? " " . $where -> to_clause(true, $this) : "";
         return $this -> query("DELETE FROM $tbl$w");
     }
     function query_insert($tbl_name, $values) {
@@ -119,11 +119,11 @@ class MYSQL {
             $cols = substr($cols, 0, strlen($cols) - 2);
         }
         $where = ""; $limit = ""; $offset = "";
-        $orderBy = ""; $descOrder = false;
+        $orderBy = array(); $descOrder = array();
         for ($i=2; $i < func_num_args(); $i++) { 
             $arg = func_get_arg($i);
-            if(is_a($arg, 'a4smanjorg5\DBUtils\SQL_WHERE_CLAUSE')) {
-                if(is_a($where, 'a4smanjorg5\DBUtils\SQL_WHERE_CLAUSE')) {
+            if(is_a($arg, __NAMESPACE__ .'\SQL_WHERE_CLAUSE')) {
+                if(is_a($where, __NAMESPACE__ .'\SQL_WHERE_CLAUSE')) {
                     $arg -> reverse();
                     while ($expr = $arg -> next()) {
                         if (is_array($expr)) {
@@ -138,11 +138,13 @@ class MYSQL {
                 elseif($offset == "")
                     $offset = " OFFSET $arg";
             } elseif(is_bool($arg))
-                $descOrder = $arg;
-            else $orderBy = SQL::fieldname_quote($arg);
+                $descOrder[] = $arg;
+            else $orderBy[] = SQL::fieldname_quote($arg);
         }
-        if ($orderBy != "")
-            $orderBy = " ORDER BY $orderBy " . ($descOrder ? "DESC" : "ASC");
+        if (count($orderBy) > 0)
+            $orderBy = " ORDER BY " . implode(', ', array_map(function($orderBy, $descOrder) {
+                return "$orderBy " . ($descOrder ? "DESC" : "ASC");
+            }, $orderBy, $descOrder));
         if($where !== "") $where = ' ' . $where -> to_clause(true, $this);
         return $this -> query("SELECT $cols FROM $tbl$where$orderBy$limit$offset");
     }
@@ -153,7 +155,7 @@ class MYSQL {
             $vals = "$vals" . SQL::fieldname_quote($col) .
               " = " . SQL::escape_valstr($val, true, $this) . ", ";
         $vals = substr($vals, 0, strlen($vals) - 2);
-        $w = is_a($where, 'a4smanjorg5\DBUtils\SQL_WHERE_CLAUSE') ? " " . $where -> to_clause(true, $this) : "";
+        $w = is_a($where, __NAMESPACE__ .'\SQL_WHERE_CLAUSE') ? " " . $where -> to_clause(true, $this) : "";
         return $this -> query("UPDATE $tbl SET $vals$w");
     }
     function query_truncate($tbl_name) {
