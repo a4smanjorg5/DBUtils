@@ -145,6 +145,7 @@ class MYSQL {
             $orderBy = " ORDER BY " . implode(', ', array_map(function($orderBy, $descOrder) {
                 return "$orderBy " . ($descOrder ? "DESC" : "ASC");
             }, $orderBy, $descOrder));
+        else $orderBy = "";
         if($where !== "") $where = ' ' . $where -> to_clause(true, $this);
         return $this -> query("SELECT $cols FROM $tbl$where$orderBy$limit$offset");
     }
